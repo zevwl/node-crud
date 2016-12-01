@@ -1,6 +1,7 @@
 const Event = require('../models/event');
 
 module.exports = {
+    seedEvents: seedEvents,
     showEvents: showEvents,
     showSingle: showSingle,
     showCreate: showCreate,
@@ -9,6 +10,30 @@ module.exports = {
     processEdit: processEdit,
     deleteEvent: deleteEvent
 };
+
+/**
+ * Seed the database
+ */
+function seedEvents(req, res) {
+  // create some events
+  const events = [
+    { name: 'Basketball', description: 'Throwing into a basket.' },
+    { name: 'Swimming', description: 'Michael Phelps is the fast fish.' },
+    { name: 'Weightlifting', description: 'Lifting heavy things up' },
+    { name: 'Ping Pong', description: 'Super fast paddles' }
+  ];
+
+  // use the Event model to insert/save
+  Event.remove({}, () => {
+    for (event of events) {
+      var newEvent = new Event(event);
+      newEvent.save();
+    }
+  });
+
+  // seeded!
+  res.send('Database seeded!');
+}
 
 /**
  * Show all events
