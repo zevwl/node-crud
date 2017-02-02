@@ -1,5 +1,11 @@
+<% if (errorMessage.length > 0) { %>
+    <div class="alert alert-danger text-center"><%= errorMessage %></div>
+<% } else if (successMessage.length > 0) { %>
+    <div class="alert alert-success text-center"><%= successMessage %></div>
+<% } %>
+
 <div class="jumbotron text-center">
-    <h1>Home Page</h1>
+    <h1>Olympic Events</h1>
 
     <a href="/events" class="btn btn-lg btn-danger">See Events</a>
 </div>
