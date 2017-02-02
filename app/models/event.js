@@ -3,12 +3,19 @@ const Schema = mongoose.Schema;
 
 // Create schema
 const eventSchema = new Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     slug: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
-    description: String
+    description: {
+        type: String,
+        required: true
+    }
 });
 
 // Middleware
