@@ -4,9 +4,9 @@ const mainController = require('./controllers/main.controller');
 const eventController = require('./controllers/event.controller.js');
 const userController = require('./controllers/user.controller');
 
-const adminRoutes = require('./access-controll/admin-routs');
-const authorizedRoutes = require('./access-controll/authorized-routs');
-const authenticatedRoutes = require('./access-controll/authenticated-routs');
+const adminRoutes = require('./access-controll/admin-routes');
+const authorizedRoutes = require('./access-controll/authorized-routes');
+const authenticatedRoutes = require('./access-controll/authenticated-routes');
 
 // Export router
 module.exports = (app, passport) => {
