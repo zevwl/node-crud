@@ -1,6 +1,6 @@
 
 
-module.exports = (app, passport, eventController, userController) => {
+module.exports = (app, passport, eventController) => {
 
     // Event routes
     app.get('/events', eventController.showEvents);
@@ -17,7 +17,7 @@ module.exports = (app, passport, eventController, userController) => {
     app.post('/events/:slug', eventController.processEdit);
 
     // Delete events
-    app.get('/events/:slug/delete', userController.adminOnly, eventController.deleteEvent);
+    app.get('/events/:slug/delete', eventController.deleteEvent);
 
     // Show single event
     app.get('/events/:slug', eventController.showSingle);
