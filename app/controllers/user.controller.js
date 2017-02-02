@@ -2,7 +2,6 @@ module.exports = {
 
     adminOnly: (req, res, next) => {
         if (req.user && !req.user.isAdmin) {
-
             req.flash('error', 'This task requires admin privileges.');
             res.redirect('/');
         } else {
@@ -12,10 +11,8 @@ module.exports = {
 
     authorizedOnly: (req, res, next) => {
         if (req.user && !req.user.isAllowed) {
-
             req.flash('error', 'You are not allowed yet.');
-            return res.redirect('/');
-
+            res.redirect('/');
         } else {
             next();
         }
