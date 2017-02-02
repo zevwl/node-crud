@@ -28,5 +28,6 @@ router.post('/events/:slug', eventsController.processEdit);
 // Delete events
 router.get('/events/:slug/delete', eventsController.deleteEvent);
 
-// Show single event
-router.get('/events/:slug', eventsController.showSingle);
+    // 404 route
+    app.get('*', mainController.notFound);
+};
