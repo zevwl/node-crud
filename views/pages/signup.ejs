@@ -1,0 +1,60 @@
+<div class="col-sm-6 col-sm-offset-3">
+    <h1><span class="fa fa-sign-in"></span>Signup</h1>
+
+    <% if (errorMessage.length > 0) { %>
+        <!-- Show any messages that come back with authentication -->
+        <div class="alert alert-danger">
+            <% for (let error of errorMessage) { %>
+                <p><%= error %></p>
+            <% } %>
+        </div>
+    <% } %>
+
+    <!-- Signup form -->
+    <form action="/signup" method="post">
+
+        <div class="row">
+
+            <div class="form-group col-sm-6">
+                <label for="first-name" class="control-label">First Name</label>
+                <input type="text" id="first-name" class="form-control" name="name.first" required autofocus>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label for="last-name" class="control-label">Last Name</label>
+                <input type="text" id="last-name" class="form-control" name="name.last" required>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label for="username" class="control-label">Username</label>
+                <input type="text" id="username" class="form-control" name="username" required>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label for="email" class="control-label">Email</label>
+                <input type="email" id="email" class="form-control" name="email" required>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label for="password" class="control-label">Password</label>
+                <input type="password" id="password" class="form-control" name="password" required>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <label for="password-again" class="control-label">Retype Password</label>
+                <input type="password" id="password-again" class="form-control" name="password.again" required>
+                <!--<div class="help-block">Passwords don't match</div>-->
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Signup</button>
+
+    </form>
+
+    <hr>
+
+    <p>Already have an account? <a href="/login">Login</a></p>
+    <p>Or go <a href="/">home</a>.</p>
+
+</div>

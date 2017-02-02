@@ -1,0 +1,16 @@
+<% let user = req.user %>
+
+<div class="well">
+    <h1><%= user.first_name %> <%= user.last_name %></h1>
+    <p>Username: <%= user.username %></p>
+    <p>Email: <%= user.email %></p>
+    <% if (!user.isAdmin) { %>
+        <p>Allowed: <%= user.isAllowed ? 'Yes' : 'No' %></p>
+    <% } else { %>
+        <p>Admin: <%= user.isAdmin ? 'Yes' : 'No' %></p>
+    <% } %>
+    <p>Created: <%= user.date_created %></p>
+    <% if (user.date_created.getTime() !== user.date_modified.getTime()) { %>
+        <p>Last modified: <%= user.date_modified %></p>
+    <% } %>
+</div>

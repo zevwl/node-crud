@@ -28,6 +28,16 @@
                     <li><a href="/events">Events</a></li>
                     <li><a href="/events/create">Create Event</a></li>
                 </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <% if (isAuthenticated) {%>
+                    <li><a href="/account">Account</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                    <% } else { %>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Signup</a></li>
+                    <% } %>
+                </ul>
             </div>
         </div>
     </header>
