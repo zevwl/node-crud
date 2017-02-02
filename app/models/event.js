@@ -9,8 +9,7 @@ const eventSchema = new Schema({
     },
     slug: {
         type: String,
-        unique: true,
-        required: true
+        unique: true
     },
     description: {
         type: String,
