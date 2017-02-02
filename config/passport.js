@@ -38,6 +38,13 @@ module.exports = (passport) => {
         if (username) username = username.toLowerCase();
 
         process.nextTick(() => {
+
+            User.findOne({ 'email': req.body.email }, (err, user) => {
+                if (err) return done(err);
+
+                if (user) return done(null, false, req.flash('error', 'This email is already associated with an account.'));
+            });
+
             User.findOne({ 'username': username }, (err, user) => {
                 if (err) return done(err);
 
