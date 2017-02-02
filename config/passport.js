@@ -81,7 +81,10 @@ module.exports = (passport) => {
 
         process.nextTick(() => {
 
-            User.findOne({ 'username': username }, (err, user) => {
+            User.findOne({ $or: [
+                { 'username': username },
+                { 'email': username }
+            ]}, (err, user) => {
 
                 if (err) return done(err);
 
