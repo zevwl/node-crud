@@ -82,6 +82,9 @@ module.exports = {
                 isLength: {
                     options: { min: 5 },
                     errorMessage: 'Username must be at least 5 characters.'
+                },
+                isAlphanumeric: {
+                    errorMessage: 'Username must contain alphanumeric characters only.'
                 }
             },
             'email': {
