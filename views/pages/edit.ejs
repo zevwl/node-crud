@@ -5,9 +5,9 @@
 <div class="row">
     <div class="col-sm-6 col-sm-offset-3">
     
-        <% if (errors.length > 0) { %>
+        <% if (errorMessage.length > 0) { %>
             <div class="alert alert-danger text-center">
-                <% for (let error of errors) { %>
+                <% for (let error of errorMessage) { %>
                     <p><%= error %></p>
                 <% } %>
             </div>

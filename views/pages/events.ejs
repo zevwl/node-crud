@@ -2,8 +2,10 @@
     <h1>All Events</h1>
 </div>
 
-<% if (success.length > 0) { %>
-    <div class="alert alert-success text-center"><%= success %></div>
+<% if (errorMessage.length > 0) { %>
+    <div class="alert alert-danger text-center"><%= errorMessage %></div>
+<% } else if (successMessage.length > 0) { %>
+    <div class="alert alert-success text-center"><%= successMessage %></div>
 <% } %>
 
 <table class="table table-bordered table-hovered table-striped">
