@@ -1,4 +1,3 @@
 module.exports = [
-    '/events/:slug/delete',
-    '/events/:slug'
+    '/events/:slug/delete'
 ];
