@@ -44,7 +44,7 @@ app.use(flash());
 app.use(morgan('dev'));
 
 // Tell express where to look for static assets
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
 // Set EJS as our template engine
 app.set('view engine', 'ejs');
