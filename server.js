@@ -19,7 +19,9 @@ const util = require('util');
 const app = express();
 const port = process.env.PORT || 8080;
 
-require('./config/passport')(passport);
+module.exports = { passport };
+
+require('./config/passport');
 
 // Change mongoose default promise library to ES2015 promise library
 mongoose.Promise = global.Promise;
@@ -72,7 +74,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 
 // Routes
-require('./app/routes')(app, passport);
+app.use('/', require('./app/routes'));
+
 
 // Start server
 app.listen(port, () => {

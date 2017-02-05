@@ -1,29 +1,32 @@
+const router = require('express').Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
-const mainController = require('./controllers/main.controller');
-const eventController = require('./controllers/event.controller.js');
-const userController = require('./controllers/user.controller');
+const eventRoutes = require('./routes/event-routes');
+const userRoutes = require('./routes/user-routes');
 
 const adminRoutes = require('./access-controll/admin-routes');
 const authorizedRoutes = require('./access-controll/authorized-routes');
 const authenticatedRoutes = require('./access-controll/authenticated-routes');
 
+const mainController = require('./controllers/main.controller');
+const userController = require('./controllers/user.controller');
+
+
+// Main routes
+router.get('/', mainController.showHome);
+
+router.all(adminRoutes, ensureLoggedIn(), userController.adminOnly);
+router.all(authorizedRoutes, ensureLoggedIn(), userController.authorizedOnly);
+router.all(authenticatedRoutes, ensureLoggedIn());
+
+// Event routes
+router.use('/events', eventRoutes);
+
+// User routes
+router.use('/', userRoutes);
+
+// 404 route
+router.get('*', mainController.notFound);
+
 // Export router
-module.exports = (app, passport) => {
-
-    // Main routes
-    app.get('/', mainController.showHome);
-
-    app.all(adminRoutes, ensureLoggedIn(), userController.adminOnly);
-    app.all(authorizedRoutes, ensureLoggedIn(), userController.authorizedOnly);
-    app.all(authenticatedRoutes, ensureLoggedIn());
-
-    // Event routes
-    require('./routes/event-routes')(app, passport, eventController);
-
-    // User routes
-    require('./routes/user-routes')(app, passport, userController);
-
-    // 404 route
-    app.get('*', mainController.notFound);
-};
+module.exports = router;

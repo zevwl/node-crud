@@ -2,105 +2,102 @@ const LocalStrategy = require('passport-local');
 const GoogleStrategy = require('passport-google-oauth');
 
 const User = require('../app/models/user');
-
+const passport = require('../server').passport;
 const auth = require('./auth');
 
-module.exports = (passport) => {
+
+//==================================================
+// Passport session setup
+//
+// Required for persistent login sessions
+// Passport needs ability to serialize and deserialize users out of session
+//==================================================
+
+// Used to serialize the user for the session
+passport.serializeUser((user, done) => done(null, user.id));
+
+// Used to deserialize user
+passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err, user)));
 
 
-    //==================================================
-    // Passport session setup
-    //
-    // Required for persistent login sessions
-    // Passport needs ability to serialize and deserialize users out of session
-    //==================================================
+//==================================================
+// Local SIGNUP
+//
+// We are suing named strategies since we have one for login and one for signup
+// By default, if there was no name, it would just be called 'local'
+//==================================================
 
-    // Used to serialize the user for the session
-    passport.serializeUser((user, done) => done(null, user.id));
+passport.use('local-signup', new LocalStrategy({
+    username: 'username',
+    password: 'password',
+    passReqToCallback: true
+}, (req, username, password, done) => {
 
-    // Used to deserialize user
-    passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err, user)));
+    if (username) username = username.toLowerCase();
 
+    process.nextTick(() => {
 
-    //==================================================
-    // Local SIGNUP
-    //
-    // We are suing named strategies since we have one for login and one for signup
-    // By default, if there was no name, it would just be called 'local'
-    //==================================================
+        User.findOne({ 'email': req.body.email }, (err, user) => {
+            if (err) return done(err);
 
-    passport.use('local-signup', new LocalStrategy({
-        username: 'username',
-        password: 'password',
-        passReqToCallback: true
-    }, (req, username, password, done) => {
-
-        if (username) username = username.toLowerCase();
-
-        process.nextTick(() => {
-
-            User.findOne({ 'email': req.body.email }, (err, user) => {
-                if (err) return done(err);
-
-                if (user) return done(null, false, req.flash('error', 'This email is already associated with an account.'));
-            });
-
-            User.findOne({ 'username': username }, (err, user) => {
-                if (err) return done(err);
-
-                let body = req.body;
-
-                if (user) {
-                    return done(null, false, req.flash('error', 'This username is already taken.'));
-                } else if (body.password !== body['password.again']) {
-                    return done(null, false, req.flash('error', 'Passwords don\'t match, try again.'));
-                } else {
-
-                    let newUser = new User();
-                    newUser.first_name = body['name.first'];
-                    newUser.last_name = body['name.last'];
-                    newUser.username = username;
-                    newUser.email = body.email.toLowerCase();
-                    newUser.password = newUser.generateHash(password);
-
-                    newUser.save((err) => {
-                        if (err) throw err;
-
-                        return done(null, newUser);
-                    });
-                }
-            });
+            if (user) return done(null, false, req.flash('error', 'This email is already associated with an account.'));
         });
-    }));
 
+        User.findOne({ 'username': username }, (err, user) => {
+            if (err) return done(err);
 
-    //==================================================
-    // Local LOGIN
-    //==================================================
+            let body = req.body;
 
-    passport.use('local-login', new LocalStrategy({
-        usernameField: 'username',
-        passwordField: 'password',
-        passReqToCallback: true
-    }, (req, username, password, done) => {
+            if (user) {
+                return done(null, false, req.flash('error', 'This username is already taken.'));
+            } else if (body.password !== body['password.again']) {
+                return done(null, false, req.flash('error', 'Passwords don\'t match, try again.'));
+            } else {
 
-        if (username) username = username.toLowerCase();
+                let newUser = new User();
+                newUser.first_name = body['name.first'];
+                newUser.last_name = body['name.last'];
+                newUser.username = username;
+                newUser.email = body.email.toLowerCase();
+                newUser.password = newUser.generateHash(password);
 
-        process.nextTick(() => {
+                newUser.save((err) => {
+                    if (err) throw err;
 
-            User.findOne({ $or: [
-                { 'username': username },
-                { 'email': username }
-            ]}, (err, user) => {
-
-                if (err) return done(err);
-
-                if (!user) return done(null, false, req.flash('error', 'No user found.'));
-
-                if (!user.validPassword(password)) return done(null, false, req.flash('error', 'Wrong password.'));
-
-                return done(null, user);
-            });
+                    return done(null, newUser);
+                });
+            }
         });
-    }));
-};
+    });
+}));
+
+
+//==================================================
+// Local LOGIN
+//==================================================
+
+passport.use('local-login', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+}, (req, username, password, done) => {
+
+    if (username) username = username.toLowerCase();
+
+    process.nextTick(() => {
+
+        User.findOne({ $or: [
+            { 'username': username },
+            { 'email': username }
+        ]}, (err, user) => {
+
+            if (err) return done(err);
+
+            if (!user) return done(null, false, req.flash('error', 'No user found.'));
+
+            if (!user.validPassword(password)) return done(null, false, req.flash('error', 'Wrong password.'));
+
+            return done(null, user);
+        });
+    });
+}));
