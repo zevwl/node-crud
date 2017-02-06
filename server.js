@@ -4,15 +4,17 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 // Dependencies
 const bodyParser = require('body-parser');
 const chalk = require('chalk'); // Color console output (https://github.com/chalk/chalk/blob/master/readme.md)
-const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
+// TODO: Change connect-flash to express-flash
 const express = require('express');
-const expressLayouts = require('express-ejs-layouts');
-const session = require('express-session');
 const expressValidator = require('express-validator');
+const expressLayouts = require('express-ejs-layouts');
+const flash = require('connect-flash');
+const https = require('./private-modules/redirect-to-https');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
+const session = require('express-session');
 const util = require('util');
 
 
@@ -42,6 +44,9 @@ app.use(session({
 // Session messages
 app.use(flash());
 
+// Redirect https to https
+app.use(https);
+
 // Server logs
 app.use(morgan('dev'));
 
@@ -68,18 +73,6 @@ app.use((req, res, next) => {
 
     next();
 });
-
-function requireHTTPS(req, res, next) {
-    //
-    // The 'x-forwarded-proto' check is for Heroku
-    //
-    if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
-        return res.redirect('https://' + req.get('host') + req.url);
-    }
-    next();
-}
-
-app.use(requireHTTPS);
 
 
 // Use body parser to grab info from a form

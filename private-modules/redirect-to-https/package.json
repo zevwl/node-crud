@@ -1,0 +1,12 @@
+{
+  "name": "@zevwl/redirect-to-https",
+  "version": "1.0.0",
+  "description": "Redirect http request to https",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "zevwl",
+  "license": "ISC"
+}
