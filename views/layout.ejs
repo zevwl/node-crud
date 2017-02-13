@@ -30,12 +30,15 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <% if (isAuthenticated) {%>
-                    <li><a href="/account">Account</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <% if (req.isAuthenticated()) {%>
+                        <% if (req.user && req.user.isAdmin) { %>
+                            <li><a href="/admin">Admin</a></li>
+                        <% } %>
+                        <li><a href="/account">Account</a></li>
+                        <li><a href="/logout">Logout</a></li>
                     <% } else { %>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/signup">Signup</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/signup">Signup</a></li>
                     <% } %>
                 </ul>
             </div>

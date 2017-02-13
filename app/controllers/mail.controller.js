@@ -4,8 +4,8 @@ const helper = require('sendgrid').mail;
 
 
 module.exports = {
-    send: (fromString, toString, subjectString, bodyString) => {
-        const from = new helper.Email(fromString);
+    send: function (fromEmail, fromName, toString, subjectString, bodyString) {
+        const from = new helper.Email(fromEmail, fromName);
         const to = new helper.Email(toString);
         const subject = subjectString;
         const content = new helper.Content('text/plain', bodyString);
@@ -20,14 +20,14 @@ module.exports = {
         });
 
         sendgrid.API(request)
-            .then(response => {
-                console.log('Status code: ', response.statusCode);
-                console.log('Body: ', response.body);
-                console.log('Headers: ', response.headers);
-            })
+            .then(response => {})
             .catch(error => {
                 console.log(error.response.statusCode);
                 console.log(error.response);
             });
+    },
+
+    sendSimple: function (to, subject, content) {
+        this.send('mail@olympics-events.herokuapp.com', 'Olympic events', to, subject, content);
     }
 };

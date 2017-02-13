@@ -24,6 +24,10 @@ router.post('/signup', userController.validateSignup, passport.authenticate('loc
 
 router.get('/account', userController.showAccount);
 
+router.get('/admin', userController.admin);
+router.get('/admin/allow/:username', userController.allowUser);
+router.get('/admin/disallow/:username', userController.disallowUser);
+
 // Logout
 router.get('/logout', userController.logout);
 

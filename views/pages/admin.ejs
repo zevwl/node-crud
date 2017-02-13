@@ -1,0 +1,42 @@
+
+<% if (errorMessage.length > 0) { %>
+    <div class="alert alert-danger text-center"><%= errorMessage %></div>
+<% } else if (successMessage.length > 0) { %>
+    <div class="alert alert-success text-center"><%= successMessage %></div>
+<% } %>
+
+
+<% if (userList && userList.length) {%>
+    <table class="table table-bordered table-hovered table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Created</th>
+                <th>Modified</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% userList.forEach((user) => { %>
+                <tr>
+                    <td><%= user.username %></td>
+                    <td><%= user.first_name + ' ' + user.last_name %></td>
+                    <td><%= user.email %></td>
+                    <td><%= moment(user.date_created).format('ddd MMM D \'YY h:mm:ss A') %></td>
+                    <td><%= user.date_created.getTime() !== user.date_modified.getTime() ? moment(user.date_modified).format('ddd MMM D \'YY h:mm:ss A') : 'N/A' %></td>
+                    <td><%= user.isAdmin ? 'Admin' : user.isAllowed ? 'Allowed' : 'Not Allowed' %></td>
+                    <td>
+                        <% if (user.isAllowed && !user.isAdmin) {%>
+                            <a href="/admin/disallow/<%= user.username %>" class="btn btn-sm btn-danger">Disallow</a>
+                        <% } else if (!user.isAllowed) { %>
+                            <a href="/admin/allow/<%= user.username %>" class="btn btn-sm btn-primary">Allow</a>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+<% } %>

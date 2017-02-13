@@ -1,3 +1,7 @@
+const moment = require('moment');
+const User = require('../models/user');
+const mail = require('../controllers/mail.controller');
+
 module.exports = {
 
     adminOnly: (req, res, next) => {
@@ -16,6 +20,44 @@ module.exports = {
         } else {
             next();
         }
+    },
+
+    admin: (req, res) => {
+        User.find({}, (err, data) => {
+            if (err) res.send(err);
+
+            res.render('pages/admin', {
+                userList: data,
+                moment: moment
+            });
+        });
+    },
+
+    allowUser: (req, res) => {
+        User.findOne({ username: req.params.username }, (err, user) => {
+            user.isAllowed = true;
+
+            user.save((err) => {
+                if (err) throw err;
+
+                mail.sendSimple(user.email, 'You are allowed!', 'Congratulations! You are now allowed to browse our website.');
+                req.flash('success', 'User allowed!');
+                res.redirect('/admin');
+            });
+        });
+    },
+
+    disallowUser: (req, res) => {
+        User.findOne({ username: req.params.username }, (err, user) => {
+            user.isAllowed = false;
+
+            user.save((err) => {
+                if (err) throw err;
+
+                req.flash('error', 'User disallowed.');
+                res.redirect('/admin');
+            });
+        });
     },
 
     login: (req, res) => {

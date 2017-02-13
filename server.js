@@ -64,8 +64,6 @@ app.use(passport.session());
 // This will run on every request
 app.use((req, res, next) => {
 
-    // Make isAuthenticated available in every request
-    res.locals.isAuthenticated = req.isAuthenticated();
     res.locals.req = req;
 
     res.locals.errorMessage = req.flash('error');

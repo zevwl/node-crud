@@ -36,18 +36,15 @@ userSchema.pre('save', function (next)  {
 
     this.date_modified = currentDate;
 
+    // At the first time, set date_created field to current date.
     if (!this.date_created) {
         this.date_created = currentDate;
     }
 
-    next();
-});
-
-// If user is admin, he is definitely allowed...
-userSchema.pre('save', function (next) {
     if (this.isAdmin && !this.isAllowed) {
         this.isAllowed = true;
     }
+
     next();
 });
 
