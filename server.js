@@ -1,5 +1,7 @@
-// Load environment variables
-if (process.env.NODE_ENV !== 'production') require('dotenv').config();
+// Set enviroment.
+const envirment = process.env.NODE_ENV || 'development';
+// Load environment variables.
+if (process.env.NODE_ENV === 'development') require('dotenv').config();
 
 // Dependencies
 const bodyParser = require('body-parser');
